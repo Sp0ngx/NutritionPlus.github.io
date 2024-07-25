@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutritionPlus | Checkout</title>
+    <link rel="stylesheet" href="NutritionPlus.css">
+    <link rel="icon" href="Images/NutritionPlus_LogoCircle.png" type="image/icon type">
+    <script>
+        // Redirect to Cart Page
+        function cartPage() {
+            window.location = "NutritionPlus_CartPage.html"
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const subtotal = localStorage.getItem('subtotal');
+            document.getElementById('subtotalDisplay').textContent = `S$${subtotal}`;
+        });
+
+        function cardFormat() {
+            var cardDigit = document.getElementById('cardNumber').value;
+            if (cardDigit.length == 4 || cardDigit.length == 9 || cardDigit.length == 14) {
+                document.getElementById('cardNumber').value = cardDigit + " ";
+            }
+        }
+
+        function dateFormat() {
+            var expiryDate = document.getElementById('expiryDate').value;
+            if (expiryDate.length == 2) {
+                document.getElementById('expiryDate').value = expiryDate + "/";
+            }
+        }
+    </script>
+    <style>
+        .container {
+            position: absolute;
+            display: flex;
+            margin: auto;
+            margin-top: 30px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .form {
+            margin: auto;
+            align-items: center;
+        }
+
+        .inputBox {
+            margin-top: 15px;
+        }
+
+        input {
+            position: relative;
+            height: 50px;
+            width: 100%;
+            font-size: 15px;
+            outline: none;
+            border: lightgray 1px solid;
+            border-radius: 5px;
+            padding-left: 10px;
+            padding-right: 10px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .column {
+            display: flex;
+            column-gap: 10px;
+        }
+
+        .payment {
+            background-color: rgb(30, 30, 30);
+            margin: 15px 0px 15px 0px;
+            color: white;
+            font-size: large;
+            font-weight: bold;
+            border-radius: 20px;
+            align-items: center;
+        }
+
+        .payment:hover {
+            cursor: pointer;
+        }
+
+        .title {
+            font-size: x-large;
+            font-weight: bold;
+        }
+
+        .paymentSec {
+            margin-top: 20px;
+        }
+
+        .label {
+            vertical-align: middle;
+        }
+
+        #card {
+            margin-bottom: 5px;
+        }
+        
+        .subtotalDisplay {
+            font-size: large;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .checkoutTitle {
+            font-size: xx-large;
+            font-weight: bolder;
+            text-align: center;
+        }
+
+        hr {
+            width: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navAll">
+        <nav class="navTop">
+            <div class="navMenu">
+                <div class="navItems">
+                    <a href="index.html"><img src="Images/NutritionPlus_Logo.png" width="180" height="26.2"
+                            alt="NutritionPlus_Logo" id="nutritionPlus_Logo"></a>
+                </div>
+                <div class="navItems">
+                    <div class="AccShop">
+                        <img src="Images/Shopping_Cart.png" alt="Shopping Cart" id="cart" width="25" height="25"
+                            height="50" class="Cart" onclick="cartPage()">
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <nav class="navBottom">
+            <div>
+                <ul class="menuList">
+                    <li class="menuItems"><a href="NutritionPlus_Store.html" id="navHyperlink">Nutrition</a></li>
+                    <li class="menuItems"><a href="NutritionPlus_FAQPage.html" id="navHyperlink">FAQ</a></li>
+                    <li class="menuItems"><a href="NutritionPlus_Terms&Condition.html" id="navHyperlink">T&C</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <div class="header">
+        <h2 class="checkoutTitle">Checkout</h2>
+        <hr>
+        <div class="checkoutSummary">
+            <p class="subtotalDisplay">Subtotal: <span id="subtotalDisplay"></span></p>
+        </div>
+
+
+    <section class="container">
+        <form method="get" action="NutritionPlus_Receipt.html" class="form">
+            <div class="billingDetails">
+                <span class="title">Billing Details</span>
+                <div class="column">
+                    <div class="inputBox">
+                        <input type="text" placeholder="First name" id="firstName" name="firstName" required>
+                    </div>
+
+                    <div class="inputBox">
+                        <input type="text" placeholder="Last name" id="lastName" name="lastName" required>
+                    </div>
+                </div>
+
+                <div class="inputBox">
+                    <input type="text" placeholder="Address Line 1" id="address1" name="address1" required>
+                </div>
+
+                <div class="inputBox">
+                    <input type="text" placeholder="Address Line 2" id="address2" name="address2">
+                </div>
+
+                <div class="inputBox">
+                    <input type="text" placeholder="Postal code" id="postalCode" name="postalCode" required>
+                </div>
+
+                <div class="inputBox">
+                    <input type="text" placeholder="Phone" id="phone" name="phone" minlength="8" maxlength="8" pattern="^[0-9]{8}$" required>
+                </div>
+            </div>
+
+            <div class="paymentSec">
+                <span class="title">Payment Method</span>
+                <div class="inputBox">
+                    <label class="label">Credit/Debit Card</label>
+                    <img src="Images/Credit&Debit_Card.png" alt="" width="80.7px" height="25px" class="label" id="card">
+                    <input type="text" placeholder="Card Number" name="cardNumber" id="cardNumber" minlength="16" maxlength="19" onkeypress="cardFormat()" required>
+                </div>
+                <div class="column">
+                    <div class="inputBox">
+                        <input type="text" placeholder="Expiration date (MM / YY)" id="expiryDate" name="expiryDate" minlength="5" maxlength="5" onkeypress="dateFormat()" required>
+                    </div>
+
+                    <div class="inputBox">
+                        <input type="text" placeholder="Security code" id="securityCode" name="securityCode" minlength="3" maxlength="3" required>
+                    </div>
+                </div>
+                <div class="inputBox">
+                    <input type="text" placeholder="Name on card" id="cardName" name="cardName" required>
+                </div>
+
+                <input type="submit" value="PAY NOW" class="payment">
+            </div>
+        </form>
+    </section>
+</body>
+
+</html>

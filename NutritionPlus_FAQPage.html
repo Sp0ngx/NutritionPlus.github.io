@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutritionPlus | FAQ</title>
+    <link rel="stylesheet" href="NutritionPlus.css">
+    <link rel="icon" href="Images/NutritionPlus_LogoCircle.png" type="image/icon type">
+    <style>
+        body {
+            text-align: center;
+        }
+
+        table, td {
+            margin: auto;
+            max-width: 80%;
+        }
+
+        table {
+            margin-bottom: 50px;
+            box-shadow: 10px 10px 10px #d3d3d3;
+        }
+
+        td {
+            padding: 20px;
+            background-color: rgb(237, 237, 237);
+        }
+
+        .tableHead {
+            background-color: rgb(30, 30, 30);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .tableChild {
+            font-size: 18px;
+        }
+
+        @media only screen and (max-width: 768px) {
+            table, .tableChild, .tableHead {
+                width: 100%;
+                font-size: medium;
+            }
+        }
+    </style>
+    <script>
+        // Redirect to Cart Page
+        function cartPage() {
+            window.location = "NutritionPlus_CartPage.html"
+        }
+    </script>
+</head>
+
+<body>
+    <div class="navAll">
+        <nav class="navTop">
+            <div class="navMenu">
+                <div class="navItems">
+                    <a href="index.html"><img src="Images/NutritionPlus_Logo.png" width="180" height="26.2"
+                            alt="NutritionPlus_Logo" id="nutritionPlus_Logo"></a>
+                </div>
+                <div class="navItems">
+                    <div class="AccShop">
+                        <img src="Images/Shopping_Cart.png" alt="Shopping Cart" id="cart" width="25" height="25"
+                            height="50" class="Cart" onclick="cartPage()">
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <nav class="navBottom">
+            <div>
+                <ul class="menuList">
+                    <li class="menuItems"><a href="NutritionPlus_Store.html" id="navHyperlink">Nutrition</a></li>
+                    <li class="menuItems"><a href="#" id="navHyperlink">FAQ</a></li>
+                    <li class="menuItems"><a href="NutritionPlus_Terms&Condition.html" id="navHyperlink">T&C</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <h1>Frequently Asked Questions</h1>
+    <div class="table">
+        <table>
+            <tr>
+                <td class="tableHead">When will my order get delivered?</td>
+                <td class="tableHead">What are the payment methods available?</td>
+                <td class="tableHead">Can I make changes to my basket?</td>
+            </tr>
+
+            <tr>
+                <td class="tableChild">Within 14 business days!</td>
+                <td class="tableChild">We offer Visa. You will face validation and authorisation by us and the card
+                    issuer.
+                    This is just so we can keep our customers safe!</td>
+                <td class="tableChild">Absolutely! Use the + button to stock-up on your favourite items, or the – button
+                    if
+                    you've selected too many.</td>
+            </tr>
+
+            <tr>
+                <td class="tableHead">There is an item missing from my order?</td>
+                <td class="tableHead">What happens if I am not home to accept my delivery?</td>
+                <td class="tableHead">Will I be charged customs and import charges?</td>
+            </tr>
+
+            <tr>
+                <td class="tableChild">We ship items separately to make sure you get what you need as quickly as
+                    possible.
+                </td>
+                <td class="tableChild">Don't worry, the courier will let you know where your parcel.</td>
+                <td class="tableChild">NutritionPlus cover the Goods and Services Tax (GST) for all orders delivered in
+                    Singapore.</td>
+            </tr>
+        </table>
+    </div>
+        <div class="infoContainer">
+            <div class="information">
+                <span class="infoHighlight">FREE SHIPPING!</span>
+                <span class="infoHighlightDesc">for all orders made.</span>
+            </div>
+            <div class="information">
+                <span class="infoHighlight">30 DAYS RETURN!</span>
+                <span class="infoHighlightDesc">Return product for free if it is not to liking.</span>
+            </div>
+            <div class="information">
+                <span class="infoHighlight">ABOUT US!</span>
+                <span class="infoHighlightDesc">Find out more about our company.</span>
+            </div>
+            <div class="information">
+                <span class="infoHighlight">CONTACT US!</span>
+                <span class="infoHighlightDesc">Message our support helpline for inquiries.</span>
+            </div>
+        </div>
+</body>
+
+</html>

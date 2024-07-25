@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutritionPlus | Cart</title>
+    <link rel="stylesheet" href="NutritionPlus.css">
+    <link rel="icon" href="Images/NutritionPlus_LogoCircle.png" type="image/icon type">
+    <style>
+        .header {
+            margin-top: 50px;
+            text-align: center;
+            max-width: 100%;
+        }
+
+        .rp {
+            text-align: center;
+        }
+
+        .continueShoppingButton {
+            background-color: rgb(30, 30, 30);
+            border-radius: 10px;
+            padding: 15px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .cartInformation {
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+
+        .noItem {
+            margin-top: 50px;
+            margin-bottom: 50px;
+            font-size: 25px;
+        }
+
+        .ysc {
+            text-align: center;
+        }
+
+        hr {
+            width: 75%;
+        }
+
+        .productNav,
+        li {
+            display: flex;
+        }
+
+        .productInfo {
+            margin: 0px 240px 0px 230px;
+        }
+
+        .image {
+            margin-left: 160px;
+        }
+
+        .product {
+            display: flex;
+            flex: content;
+        }
+
+        .quantityBtn {
+            background-color: white;
+            border: 1px lightgray solid;
+            color: black;
+            font-size: x-large;
+            cursor: pointer;
+            padding: 10px 17px 10px 17px;
+        }
+
+        .quantityBtn:hover {
+            background-color: black;
+            color: white;
+            transition: 0.5s;
+        }
+
+        .quantity {
+            margin-left: 60px;
+            margin-right: 400px;
+        }
+
+        .quantityNo {
+            margin: 0px 10px 0px 10px;
+        }
+
+        .itemName {
+            width: 30%;
+        }
+
+        .li {
+            max-width: 100%;
+        }
+
+        .checkOutButton {
+            background-color: rgb(30, 30, 30);
+            color: white;
+            padding: 12px 60px 12px 60px;
+            font-size: 20px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .checkOutButton:hover {
+            background-color: rgb(40, 40, 40);
+            transition: 0.5s;
+            cursor: pointer;
+        }
+
+        @media only screen and (max-width: 480px) {
+
+            /* Styles for phones and smaller */
+            .productNav {
+                flex-direction: row;
+            }
+
+            .productInfo {
+                margin: 0px;
+            }
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartList = document.getElementById('cartList');
+            const cartInformation = document.getElementById('cartInformation');
+            const productNav = document.getElementById('productNav');
+            const checkOut = document.getElementById('checkOut');
+
+            // Checkout Function (Redirect to Checkout Page)
+            document.getElementById('checkOut').addEventListener('click', function () {
+                window.location.href = 'NutritionPlus_Checkout.html';
+            });
+
+            // Update cart in localStorage and UI
+            function updateCart() {
+                let subtotal = 0;
+
+                if (cart.length === 0) {
+                    cartList.style.display = 'none';
+                    cartInformation.style.display = 'block';
+                    productNav.style.display = 'none';
+                    checkOut.style.display = 'none';
+                    document.getElementById('subtotalAmount').textContent = 'S$0.00'; // Reset subtotal if cart is empty
+                } else {
+                    cartList.innerHTML = ''; // Clear unordered list
+
+                    cart.forEach(item => {
+                        const li = document.createElement('li');
+                        let totalPrice = parseFloat(item.price.replace('S$', '').trim()) * item.quantity;
+
+                        li.innerHTML = `
+                <img src="${item.imageUrl}" alt="${item.name}" height="100" width="100" class="image">
+                <span class="product">
+                    <span class="itemName">${item.name}</span>
+                    <div class="quantity">
+                        <button class="decreaseQuantity quantityBtn">-</button>
+                        <span class="quantityNo">${item.quantity}</span>
+                        <button class="increaseQuantity quantityBtn">+</button>
+                    </div>
+                    <span class="itemTotalPrice">S$${totalPrice.toFixed(2)}</span>
+                </span>
+            `;
+                        cartList.appendChild(li);
+
+                        subtotal += totalPrice;
+
+                        // Store subtotal in localStorage
+                        localStorage.setItem('subtotal', subtotal.toFixed(2));
+                        document.getElementById('subtotalAmount').textContent = `S$${subtotal.toFixed(2)}`;
+
+                        const decreaseBtn = li.querySelector('.decreaseQuantity');
+                        const increaseBtn = li.querySelector('.increaseQuantity');
+                        const quantitySpan = li.querySelector('.quantityNo');
+                        const totalPriceSpan = li.querySelector('.itemTotalPrice');
+
+                        decreaseBtn.addEventListener('click', function () {
+                            let currentQuantity = parseInt(quantitySpan.textContent);
+                            if (currentQuantity > 1) {
+                                currentQuantity--;
+                                quantitySpan.textContent = currentQuantity;
+                                totalPrice = parseFloat(item.price.replace('S$', '').trim()) * currentQuantity;
+                                totalPriceSpan.textContent = `S$${totalPrice.toFixed(2)}`;
+                                updateCartItem(item.productId, currentQuantity, totalPrice); // Update item in localStorage
+                                subtotal -= parseFloat(item.price.replace('S$', '').trim()); // Adjust subtotal
+                                document.getElementById('subtotalAmount').textContent = `S$${subtotal.toFixed(2)}`;
+                            } else {
+                                // console.log(item.productId)
+                                removeCartItem(item.productId); // Remove item from cart if quantity is 0
+                            }
+                        });
+
+                        increaseBtn.addEventListener('click', function () {
+                            let currentQuantity = parseInt(quantitySpan.textContent);
+                            if (currentQuantity < 99) {
+                                currentQuantity++;
+                                quantitySpan.textContent = currentQuantity;
+                                totalPrice = parseFloat(item.price.replace('S$', '').trim()) * currentQuantity;
+                                totalPriceSpan.textContent = `S$${totalPrice.toFixed(2)}`;
+                                updateCartItem(item.productId, currentQuantity, totalPrice); // Update cart item in localStorage
+                                subtotal += parseFloat(item.price.replace('S$', '').trim()); // Adjust subtotal
+                                document.getElementById('subtotalAmount').textContent = `S$${subtotal.toFixed(2)}`;
+                            }
+                        });
+                    });
+
+                    cartInformation.style.display = 'none';
+                    productNav.style.display = 'flex';
+                    document.getElementById('subtotalAmount').textContent = `S$${subtotal.toFixed(2)}`;
+                }
+            }
+
+           // Update localStorage with new cart data
+            function updateCartItem(itemId, newQuantity, newTotalPrice) {
+                // Find the item by itemId and update only that item
+                
+                let itemToUpdate = itemId;
+                itemToUpdate = cart.find(item => item.productId === itemId)
+                // console.log(itemToUpdate)
+                // console.log(cart)
+                if (itemToUpdate) {
+                    itemToUpdate.quantity = newQuantity;
+                    itemToUpdate.totalPrice = newTotalPrice;
+                }
+
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+
+
+
+            // Remove item from cart and update localStorage
+            function removeCartItem(itemId) {
+                // Remove the item from array
+
+                // console.log(itemId);
+                // console.log(cart)
+                
+
+                let indexToRemove = itemId;
+                indexToRemove = cart.findIndex(item => item.productId === itemId)
+                console.log(indexToRemove)
+                console.log("new cart" + cart)
+                
+                // console.log(cart)
+                cart.splice(indexToRemove, 1);
+
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCart(); // Refresh the cart display after removal
+            }
+
+            updateCart();
+        });
+    </script>
+</head>
+
+<body>
+    <div class="navAll">
+        <nav class="navTop">
+            <div class="navMenu">
+                <div class="navItems">
+                    <a href="index.html"><img src="Images/NutritionPlus_Logo.png" width="180" height="26.2"
+                            alt="NutritionPlus_Logo" id="nutritionPlus_Logo"></a>
+                </div>
+                <div class="navItems">
+                    <div class="AccShop">
+                        <img src="Images/Shopping_Cart.png" alt="Shopping Cart" id="cart" width="25" height="25"
+                            height="50" class="Cart">
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <nav class="navBottom">
+            <div>
+                <ul class="menuList">
+                    <li class="menuItems"><a href="NutritionPlus_Store.html" id="navHyperlink">Nutrition</a></li>
+                    <li class="menuItems"><a href="NutritionPlus_FAQPage.html" id="navHyperlink">FAQ</a></li>
+                    <li class="menuItems"><a href="NutritionPlus_Terms&Condition.html" id="navHyperlink">T&C</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <div class="header">
+        <h2 class="ysc">Your Shopping Cart</h2>
+        <div class="productNav" id="productNav">
+            <p class="productInfo">Items</p>
+            <p class="productInfo">Quantity</p>
+            <p class="productInfo">Price</p>
+        </div>
+        <hr>
+        <div class="cartInformation" id="cartInformation">
+            <p class="noItem">There are currently no items in your basket.</p>
+            <a href="NutritionPlus_Store.html" class="continueShoppingButton">CONTINUE SHOPPING</a>
+        </div>
+        <ul id="cartList"></ul>
+
+        <div class="subtotalSection">
+            <p class="subtotalLabel">Subtotal:</p>
+            <p class="subtotalAmount" id="subtotalAmount">S$0.00</p>
+        </div>
+
+        <button id="checkOut" class="checkOutButton">CHECKOUT</button>
+
+    </div>
+
+    <h2 class="rp">RECOMMENDED PRODUCTS</h2>
+
+    <ul class="productUL">
+        <li class="productLI" id="product5">
+            <div class="productList">
+                <a href="NutritionPlus_BuyPage.html?id=5" class="productEntire">
+                    <img src="Images/MyProtein_ClearWheyProtein.png" alt="MP Clear Whey Protein" height="250"
+                        width="250" class="productImg">
+
+                    <div class="productDescription">
+                        <h3 class="productName">MP Clear Whey Protein</h3>
+                        <p class="productPrice">S$156.79</p>
+                        <p class="buyButton">View More</p>
+                </a>
+            </div>
+        </li>
+
+        <li class="productLI" id="product6">
+            <div class="productList">
+                <a href="NutritionPlus_BuyPage.html?id=6" class="productEntire">
+                    <img src="Images/MP_Impact_Creatine.png" alt="MP Impact Creatine Monohydrate Powder" height="250"
+                        width="250" class="productImg">
+
+                    <div class="productDescription">
+                        <h3 class="productName">MP Impact Creatine Powder</h3>
+                        <p class="productPrice">S$32.99</p>
+                        <p class="buyButton">View More</p>
+                </a>
+            </div>
+        </li>
+
+        <li class="productLI" id="product7">
+            <div class="productList">
+                <a href="NutritionPlus_BuyPage.html?id=7" class="productEntire">
+                    <img src="Images/on-bcaa-1000_Image_01.webp" alt="ON BCAA 1000" height="250" width="250"
+                        class="productImg">
+
+                    <div class="productDescription">
+                        <h3 class="productName">ON BCAA 1000</h3>
+                        <p class="productPrice">S$53.19</p>
+                        <p class="buyButton">View More</p>
+                </a>
+            </div>
+        </li>
+
+        <li class="productLI" id="product8">
+            <div class="productList">
+                <a href="NutritionPlus_BuyPage.html?id=8" class="productEntire">
+                    <img src="Images/MP_Impact_EAA.png" alt="MP Impact EAA" height="250" width="250" class="productImg">
+
+                    <div class="productDescription">
+                        <h3 class="productName">MP Impact EAA</h3>
+                        <p class="productPrice">S$64.67</p>
+                        <p class="buyButton">View More</p>
+                </a>
+            </div>
+        </li>
+
+    </ul>
+
+    <div class="infoContainer">
+        <div class="information">
+            <span class="infoHighlight">FREE SHIPPING!</span>
+            <span class="infoHighlightDesc">for all orders made.</span>
+        </div>
+        <div class="information">
+            <span class="infoHighlight">30 DAYS RETURN!</span>
+            <span class="infoHighlightDesc">Return product for free if it is not to liking.</span>
+        </div>
+        <div class="information">
+            <span class="infoHighlight">ABOUT US!</span>
+            <span class="infoHighlightDesc">Find out more about our company.</span>
+        </div>
+        <div class="information">
+            <span class="infoHighlight">CONTACT US!</span>
+            <span class="infoHighlightDesc">Message our support helpline for inquiries.</span>
+        </div>
+    </div>
+</body>
+
+</html>

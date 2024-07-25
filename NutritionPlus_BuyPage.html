@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutritionPlus | Product</title>
+    <link rel="stylesheet" href="NutritionPlus.css">
+    <link rel="icon" href="Images/NutritionPlus_LogoCircle.png" type="image/icon type">
+    <style>
+        .product {
+            display: flex;
+            justify-content: center;
+            margin-left: 100px;
+            max-width: 100%;
+        }
+
+        .productDescriptionBuy {
+            margin-top: 40px;
+            max-width: 100%;
+        }
+
+        .productNameBuy,
+        .productPriceBuy {
+            font-size: 30px;
+            max-width: 100%;
+        }
+
+        hr {
+            max-width: 98%;
+        }
+
+        .productButton {
+            border-radius: 25px;
+            border: 0px;
+            background-color: rgb(20, 20, 20);
+            color: white;
+            width: 500px;
+            height: 50px;
+            font-size: larger;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+
+        .productButton:hover {
+            background-color: rgb(40, 40, 40);
+            transition: 0.5s;
+        }
+
+        .description {
+            margin-top: 50px;
+            margin-bottom: 50px;
+            max-width: 80%;
+        }
+
+        .quantity {
+            margin-bottom: 40px;
+        }
+
+        .quantityBtn {
+            background-color: white;
+            border: 1px lightgray solid;
+            color: black;
+            font-size: x-large;
+            cursor: pointer;
+            padding: 10px 17px 10px 17px;
+        }
+
+        .quantityBtn:hover {
+            background-color: black;
+            color: white;
+            transition: 0.5s;
+        }
+
+        .quantityInput {
+            width: 60px;
+            height: 45px;
+            text-align: center;
+            background-color: transparent;
+            font-size: 20px;
+            border: 0px;
+        }
+
+        .productImg {
+            height: 600px;
+            width: 600px;
+        }
+
+        .popUp {
+            position: absolute;
+            top: 25%;
+            left: 15%;
+            width: 60%;
+            height: 60%;
+            padding: 16px;
+            background-color: white;
+            border-radius: 10px;
+            z-index: 2;
+            overflow: auto;
+        }
+
+        .popUpContainer {
+            display: none;
+        }
+
+        .left {
+            left: 0;
+            width: 50%;
+        }
+
+        .right {
+            right: 0;
+            width: 50%;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        .checkOut,
+        .continueShop {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .checkOut {
+            background-color: rgb(30, 30, 30);
+            color: white;
+        }
+
+        .continueShop {
+            background-color: white;
+            color: rgb(30, 30, 30);
+            border: black 1px solid;
+        }
+
+        .checkOut:hover,
+        .continueShop:hover {
+            cursor: pointer;
+        }
+
+        .blackOverlay {
+            position: absolute;
+            top: 0%;
+            left: 0%;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 1;
+            opacity: 0.60;
+        }
+
+        @media only screen and (max-width: 768px) {
+            .product {
+                margin: auto;
+                flex-direction: column;
+                max-width: 100%;
+            }
+
+            .productButton {
+                width: 100%;
+            }
+
+            .productDescriptionBuy,
+            .description {
+                text-align: center;
+                margin: auto;
+                max-width: 90%;
+            }
+
+            .quantity {
+                justify-content: center;
+            }
+
+            .productButton {
+                margin-bottom: 20px;
+                width: 90%;
+            }
+
+            .description {
+                margin: auto;
+                align-items: center;
+            }
+
+            .productNameBuy,
+            .productPriceBuy {
+                max-width: 100%;
+            }
+
+            .productImg {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    </style>
+
+    <script>
+        // Redirect to Cart Page
+        function cartPage() {
+            window.location = "NutritionPlus_CartPage.html"
+        }
+
+        // Only allow numbers for input box
+        function isInputNumber(evt) {
+            var char = String.fromCharCode(evt.which);
+            if (!(/[0-9]/.test(char))) {
+                evt.preventDefault();
+            }
+        }
+
+
+        // Product details display
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get product ID from URL query parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+
+            // Product Dictionary
+            const products = {
+                1: {
+                    name: "MP Clear Whey Protein - MARVEL - SPIDERMAN",
+                    price: "S$156.79",
+                    description: "We’ve joined forces with MARVEL to deliver Super Hero-themed Clear Whey Protein. Four flavours inspired by iconic MARVEL characters — Captain Marvel, Black Panther, Spider-Man, and Hulk — and delivering at least 20g of protein per serve.",
+                    imageUrl: "Images/Clear Whey Protein - MARVEL - SPIDERMAN.png"
+                },
+
+                2: {
+                    name: "MP Clear Whey Protein - MARVEL - CAPTAIN MARVEL",
+                    price: "S$156.79",
+                    description: "We’ve joined forces with MARVEL to deliver Super Hero-themed Clear Whey Protein. Four flavours inspired by iconic MARVEL characters — Captain Marvel, Black Panther, Spider-Man, and Hulk — and delivering at least 20g of protein per serve.",
+                    imageUrl: "Images/Clear Whey Protein - MARVEL - CAPTAIN MARVEL.png"
+                },
+
+                3: {
+                    name: "MP Clear Whey Protein - MARVEL - BLACK PANTHER",
+                    price: "S$156.79",
+                    description: "We’ve joined forces with MARVEL to deliver Super Hero-themed Clear Whey Protein. Four flavours inspired by iconic MARVEL characters — Captain Marvel, Black Panther, Spider-Man, and Hulk — and delivering at least 20g of protein per serve.",
+                    imageUrl: "Images/Clear Whey Protein - MARVEL - BLACK PANTHER.png"
+                },
+
+                4: {
+                    name: "MP Clear Whey Protein - MARVEL - HULK",
+                    price: "S$156.79",
+                    description: "We’ve joined forces with MARVEL to deliver Super Hero-themed Clear Whey Protein. Four flavours inspired by iconic MARVEL characters — Captain Marvel, Black Panther, Spider-Man, and Hulk — and delivering at least 20g of protein per serve.",
+                    imageUrl: "Images/Clear Whey Protein - MARVEL - HULK.png"
+                },
+
+                5: {
+                    name: "MP Clear Whey Protein",
+                    price: "S$128.99",
+                    description: "Experience the difference with Clear Whey Protein. Lighter than traditional whey, and more powerful than your average juice. Shaking things up with 20g* of protein a serve from fast-absorbing hydrolysed whey protein isolate – Clear Whey Isolate fuels muscle fast with an explosion of refreshingly juicy flavour.",
+                    imageUrl: "Images/MyProtein_ClearWheyProtein.png"
+                },
+
+                6: {
+                    name: "MP Impact Creatine Powder",
+                    price: "S$68.99",
+                    description: "One of the most highly researched forms of creatine in the world — our hard-hitting powder is scientifically proven to increase physical performance.",
+                    imageUrl: "Images/MP_Impact_Creatine.png"
+                },
+
+                7: {
+                    name: "ON BCAA 1000",
+                    price: "S$53.19",
+                    description: "Branched chain amino acid food supplement capsules. Food supplements are not to be used as a substitute for a varied diet. Do not exceed the recommended daily dose. Keep out of reach of children.",
+                    imageUrl: "Images/on-bcaa-1000_Image_01.webp"
+                },
+
+                8: {
+                    name: "MP Impact EAA",
+                    price: "S$64.67",
+                    description: "Amino acids naturally occur in protein, which helps to build and repair new muscle1 — super-important for all fitness goals. Our improved formula delivers a superior blend of essential amino acids, with zero calories and zero sugar — plus it's totally vegetarian and vegan-friendly. ",
+                    imageUrl: "Images/MP_Impact_EAA.png"
+                },
+            };
+
+            // Retrieve product details from dictionary based on productId
+            const product = products[productId];
+
+            // Update DOM elements with product details
+            if (product) {
+                document.getElementById('productImg').src = product.imageUrl;
+                document.getElementById('productName').textContent = product.name;
+                document.getElementById('productPrice').textContent = product.price;
+                document.getElementById('productDescription').textContent = product.description;
+
+                // popUp content
+                document.getElementById('popUpProductImg').src = product.imageUrl;
+                document.getElementById('popUpProductName').textContent = product.name;
+                document.getElementById('popUpProductPrice').textContent = product.price;
+
+                // Get quantity input element and buttons
+                const quantityInput = document.getElementById('quantityInput');
+                const decreaseBtn = document.getElementById('decreaseQuantity');
+                const increaseBtn = document.getElementById('increaseQuantity');
+
+                // Function to decrease quantity
+                decreaseBtn.addEventListener('click', function () {
+                    let currentQuantity = parseInt(quantityInput.value);
+                    if (currentQuantity > 1) {
+                        quantityInput.value = currentQuantity - 1;
+                    }
+                });
+
+                // Function to increase quantity
+                increaseBtn.addEventListener('click', function () {
+                    let currentQuantity = parseInt(quantityInput.value);
+                    if (currentQuantity < 99) {
+                        quantityInput.value = currentQuantity + 1;
+                    }
+                });
+
+                // Function for adding product to cart
+                document.getElementById('addToBasketBtn').addEventListener('click', function () {
+                    const quantity = parseInt(quantityInput.value);
+
+                    if (quantity >= 1 && quantity <= 99) {
+                        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+                        // Check if the product is already in the cart
+                        const existingItemIndex = cart.findIndex(item => item.productId === productId);
+
+                        if (existingItemIndex !== -1) {
+                            // If product exists in cart, update quantity
+                            cart[existingItemIndex].quantity += quantity;
+                        } else {
+                            // If product doesn't exist in cart, add it
+                            cart.push({
+                                productId: productId,
+                                name: product.name,
+                                price: product.price,
+                                quantity: quantity,
+                                imageUrl: product.imageUrl
+                            });
+                        }
+
+                        // Save updated cart to localStorage
+                        localStorage.setItem('cart', JSON.stringify(cart));
+                        popUpOpen();
+                    } else {
+                        alert(`Please select a quantity between 1 and 99.`);
+                    }
+                });
+            } else {
+                console.log("Product not found.");
+            }
+        });
+
+        // Open and Close popUpContainer
+        function popUpOpen() {
+            const container = document.getElementById('container');
+            container.style.display = 'flex';
+
+            window.scrollTo({
+                top: 0,
+                behavior: 'auto'
+            });
+
+            // Disable scrolling
+            document.body.style.overflow = 'hidden';
+
+            // Get product quantity info
+            const quantityInput = document.getElementById('quantityInput');
+            const quantity = parseInt(quantityInput.value);
+
+            // Update quantity in pop-up
+            document.getElementById('popUpQuantity').textContent = `Quantity: ${quantity}`;
+
+            // Get product price from product details
+            const productPriceString = document.getElementById('productPrice').textContent;
+            // Extract numeric value from product price
+            const productPrice = parseFloat(productPriceString.substring(2)); // Remove 'S$' and make it a float value
+
+            // Calculate subtotal
+            const subtotal = productPrice * quantity;
+
+            // Update subtotal in pop-up
+            document.getElementById('popUpSubtotal').textContent = `Subtotal: S$${subtotal.toFixed(2)}`; // Formatting
+        }
+
+        function popUpClose() {
+            const container = document.getElementById('container')
+            container.style.display = 'none';
+            window.location = "NutritionPlus_Store.html"
+
+            // Enable scrolling feature
+            document.body.style.overflow = 'auto';
+        }
+    </script>
+</head>
+
+<body>
+    <div class="navAll">
+        <nav class="navTop">
+            <div class="navMenu">
+                <div class="navItems">
+                    <a href="index.html"><img src="Images/NutritionPlus_Logo.png" width="180" height="26.2"
+                            alt="NutritionPlus_Logo" id="nutritionPlus_Logo"></a>
+                </div>
+                <div class="navItems">
+                    <div class="AccShop">
+                        <img src="Images/Shopping_Cart.png" alt="Shopping Cart" id="cart" width="25" height="25"
+                            height="50" class="Cart" onclick="cartPage()">
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <nav class="navBottom">
+            <div>
+                <ul class="menuList">
+                    <li class="menuItems"><a href="NutritionPlus_Store.html" id="navHyperlink">Nutrition</a></li>
+                    <li class="menuItems"><a href="NutritionPlus_FAQPage.html" id="navHyperlink">FAQ</a></li>
+                    <li class="menuItems"><a href="NutritionPlus_Terms&Condition.html" id="navHyperlink">T&C</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <div class="product">
+        <img src="" alt="" id="productImg" class="productImg">
+        <div class="productDescriptionBuy">
+            <h3 id="productName" class="productNameBuy"></h3>
+            <p id="productPrice" class="productPriceBuy"></p>
+            <hr>
+            <p id="productDescription" class="description"></p>
+            <div>
+                <p class="quantityBuy">Quantity:</p>
+                <div class="quantity">
+                    <button id="decreaseQuantity" class="quantityBtn">-</button>
+                    <input type="text" id="quantityInput" class="quantityInput" value="1" min="1" max="99"
+                        onkeypress="isInputNumber(event)">
+                    <button id="increaseQuantity" class="quantityBtn">+</button>
+                </div>
+            </div>
+            <button id="addToBasketBtn" class="productButton">ADD TO BASKET</button>
+        </div>
+    </div>
+
+    <div class="popUpContainer" id="container">
+        <div class="popUp">
+            <h2>Added to your basket</h2>
+            <hr>
+            <div class="container">
+                <div class="left">
+                    <img src="" alt="" id="popUpProductImg" width="300px" height="300px">
+                </div>
+                <div class="right">
+                    <p id="popUpProductName">Name</p>
+                    <p id="popUpProductPrice">Price</p>
+                    <hr>
+                    <p id="popUpQuantity">Quantity: </p>
+                    <p id="popUpSubtotal">Subtotal: </p>
+                    <P class="checkOut" onclick="cartPage()">CHECKOUT</P>
+                    <p class="continueShop" onclick="popUpClose()">CONTINUE SHOPPING</p>
+                </div>
+            </div>
+        </div>
+        <div class="blackOverlay"></div>
+    </div>
+
+    <div class="infoContainer">
+        <div class="information">
+            <span class="infoHighlight">FREE SHIPPING!</span>
+            <span class="infoHighlightDesc">for all orders made.</span>
+        </div>
+        <div class="information">
+            <span class="infoHighlight">30 DAYS RETURN!</span>
+            <span class="infoHighlightDesc">Return product for free if it is not to liking.</span>
+        </div>
+        <div class="information">
+            <span class="infoHighlight">ABOUT US!</span>
+            <span class="infoHighlightDesc">Find out more about our company.</span>
+        </div>
+        <div class="information">
+            <span class="infoHighlight">CONTACT US!</span>
+            <span class="infoHighlightDesc">Message our support helpline for inquiries.</span>
+        </div>
+    </div>
+
+</body>
+
+</html>

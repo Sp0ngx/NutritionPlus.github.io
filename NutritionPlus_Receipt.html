@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutritionPlus | Checkout</title>
+    <link rel="stylesheet" href="NutritionPlus.css">
+    <link rel="icon" href="Images/NutritionPlus_LogoCircle.png" type="image/icon type">
+    <style>
+        .receiptContainer {
+            width: 80%;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgb(30, 30, 30);
+            border-radius: 8px;
+        }
+
+        .info {
+            color: white;
+            font-size: large;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .title {
+            font-size: xx-large;
+            margin-bottom: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        #subtotalDisplay {
+            font-size: x-large;
+            font-weight: bold;
+        }
+
+        .return {
+            margin: auto;
+            margin-top: 20px;
+            justify-content: center;
+            text-align: center;
+            background-color: white;
+            color: rgb(30, 30, 30);
+            width: 50%;
+            padding: 10px;
+            font-size: large;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        .return:hover {
+            cursor: pointer;
+            background-color: rgb(225, 225, 225);
+        }
+    </style>
+    <script>
+         document.addEventListener('DOMContentLoaded', function () {
+            const subtotal = localStorage.getItem('subtotal');
+            document.getElementById('subtotalDisplay').textContent = `Total: S$${subtotal}`;
+        });
+
+        function returnToHome() {
+            window.location = 'index.html';
+        }
+    </script>
+</head>
+
+<body>
+    <div class="navAll">
+        <nav class="navTop">
+            <div class="navMenu">
+                <div class="navItems">
+                    <a href="index.html"><img src="Images/NutritionPlus_Logo.png" width="180" height="26.2"
+                            alt="NutritionPlus_Logo" id="nutritionPlus_Logo"></a>
+                </div>
+                <div class="navItems">
+                    <div class="AccShop">
+                        <img src="Images/Shopping_Cart.png" alt="Shopping Cart" id="cart" width="25" height="25"
+                            height="50" class="Cart" onclick="cartPage()">
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <nav class="navBottom">
+            <div>
+                <ul class="menuList">
+                    <li class="menuItems"><a href="NutritionPlus_Store.html" id="navHyperlink">Nutrition</a></li>
+                    <li class="menuItems"><a href="NutritionPlus_FAQPage.html" id="navHyperlink">FAQ</a></li>
+                    <li class="menuItems"><a href="NutritionPlus_Terms&Condition.html" id="navHyperlink">T&C</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <div class="receiptContainer">
+        <h1 class="title">Receipt</h1>
+        <hr>
+        <p class="info" id="info"></p>
+        <p class="info" id="subtotalDisplay"></p>
+        <p class="return" onclick="returnToHome()">RETURN TO HOME</p>
+    </div>
+
+    <script>
+        // Redirect to Cart Page
+        function cartPage() {
+            window.location = "NutritionPlus_CartPage.html"
+        }
+
+        var data = window.location.search;
+        var params = new URLSearchParams(data);
+        var name = params.get('firstName') + " " + params.get('lastName');
+        var address1 = params.get('address1');
+        var address2 = params.get('address2');
+        var postalCode = params.get('postalCode');
+        var phone = params.get('phone');
+        var cardNum = params.get('cardNumber');
+        var expiryDate = params.get('expiryDate');
+        var securityCode = params.get('securityCode');
+        var cardName = params.get('cardName');
+
+        var getData = "Name: " + name + "<br>";
+        getData += "Address 1: " + address1 + "<br>";
+        getData += "Address 2: " + address2 + "<br>";
+        getData += "Postal Code: " + postalCode + "<br>";
+        getData += "Phone Number: " + phone + "<br>";
+        getData += "Card Number: " + "**** **** " + cardNum.substring(15, 19) + "<br>";
+        getData += "Expiry Date: " + expiryDate + "<br>";
+        getData += "Security Code: " + securityCode + "<br>";
+        getData += "Card Name: " + cardName + "<br>";
+
+        document.getElementById('info').innerHTML = getData; 
+    </script>
+</body>
+
+</html>
